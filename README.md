@@ -6,7 +6,7 @@
 <!--数据字段权限组件-->
 <dependency>
     <groupId>org.example</groupId>
-    <artifactId>data-field-permission-boot-start</artifactId>
+    <artifactId>data-field-permission-boot-starter</artifactId>
     <version>1.0</version>
 </dependency>
 ```
