@@ -8,7 +8,6 @@ import org.example.annotation.IgnorePermission;
 import org.example.properties.DataInformationProperties;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
@@ -32,8 +31,6 @@ import java.util.jar.JarFile;
 @Slf4j
 @Getter
 public class DataPermissionStarter implements ApplicationRunner {
-    @Resource
-    private DataInformationProperties dataInformationProperties;
     /**
      * 数据权限注解集合，key为类的全限定名
      */
@@ -46,6 +43,8 @@ public class DataPermissionStarter implements ApplicationRunner {
      * 类和所标记的数据权限注解集合，key为被注解注释的类的class
      */
     private final ConcurrentHashMap<Class<?>, DataPermission> classDataPermissionMap = new ConcurrentHashMap<>();
+    @Resource
+    private DataInformationProperties dataInformationProperties;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -139,7 +138,8 @@ public class DataPermissionStarter implements ApplicationRunner {
                     continue;
                 }
                 URLConnection urlConnection = url.openConnection();
-                if (urlConnection instanceof JarURLConnection jarURLConnection) {
+                if (urlConnection instanceof JarURLConnection) {
+                    JarURLConnection jarURLConnection = (JarURLConnection) urlConnection;
                     JarFile jarFile = jarURLConnection.getJarFile();
                     Enumeration<JarEntry> entries = jarFile.entries();
                     while (entries.hasMoreElements()) {

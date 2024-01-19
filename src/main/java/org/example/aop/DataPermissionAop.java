@@ -12,7 +12,6 @@ import org.example.core.DataInformation;
 import org.example.core.DataPermissionProvider;
 import org.example.properties.DataInformationProperties;
 import org.example.util.GsonUtils;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Array;
@@ -31,6 +30,15 @@ public class DataPermissionAop {
     private DataInformationProperties dataInformationProperties;
     @Resource
     private DataPermissionProvider dataPermissionProvider;
+
+    private static void recursionSuperClassField(List<Field> fields, Class<?> clazz) {
+        if (clazz == null) {
+            return;
+        }
+        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        Class<?> superclass = clazz.getSuperclass();
+        recursionSuperClassField(fields, superclass);
+    }
 
     @Around("execution(* *.*Controller.*(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -235,14 +243,5 @@ public class DataPermissionAop {
             // 出现异常，直接返回目标类，不能影响之后的逻辑
             return targetObject;
         }
-    }
-
-    private static void recursionSuperClassField(List<Field> fields, Class<?> clazz) {
-        if (clazz == null) {
-            return;
-        }
-        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-        Class<?> superclass = clazz.getSuperclass();
-        recursionSuperClassField(fields, superclass);
     }
 }
