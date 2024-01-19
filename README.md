@@ -28,7 +28,7 @@
 该组件已配置了AOP的切面为：
 
 ```
-@Around("execution(* *.*Controller.*(..))")
+@Around("execution(* *.*Controller.*(..)) || execution(* *.*controller.*(..))")
 ```
 
 目标控制器的命名必须符合该配置

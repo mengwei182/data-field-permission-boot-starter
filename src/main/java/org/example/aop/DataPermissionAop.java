@@ -40,7 +40,7 @@ public class DataPermissionAop {
         recursionSuperClassField(fields, superclass);
     }
 
-    @Around("execution(* *.*Controller.*(..))")
+    @Around("execution(* *.*Controller.*(..)) || execution(* *.*controller.*(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Object targetObject = joinPoint.proceed();
         // this point是一个method对象
